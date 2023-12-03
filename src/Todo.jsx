@@ -4,8 +4,8 @@ import "./style.css";
 
 export const Todo = () => {
   const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setIncompleteTodos] = useState(["TODO1", "TODO2"]);
-  const [completeTodos, setCompleteTodos] = useState(["TODO1", "TODO2"]);
+  const [incompleteTodos, setIncompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
   // get input value
   // React Hook Form
   const onChangeTodoText = (event) => setTodoText(event.target.value);
@@ -20,6 +20,25 @@ export const Todo = () => {
     const newTodos = [...incompleteTodos];
     newTodos.splice(index, 1);
     setIncompleteTodos(newTodos);
+  };
+  const onClickComplete = (index) => {
+    //define "new" variable
+    //remove the todo
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index, 1);
+    //add the todo to complete TODOs
+    const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
+  };
+  const onClickBack = (index) => {
+    //remove the TODO from complete TODOs
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index, 1);
+    //add the TODO to incomplete TODOs
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[index]];
+    setCompleteTodos(newCompleteTodos);
+    setIncompleteTodos(newIncompleteTodos);
   };
   return (
     <>
@@ -39,7 +58,7 @@ export const Todo = () => {
               <li key={todo}>
                 <div className="list-row">
                   <p className="todo-item">{todo}</p>
-                  <button>done</button>
+                  <button onClick={() => onClickComplete(index)}>done</button>
                   <button onClick={() => onClickDelete(index)}>delete</button>
                 </div>
               </li>
@@ -50,12 +69,12 @@ export const Todo = () => {
       <div className="complete-area">
         <p className="title">COMPLETE TODO</p>
         <ul>
-          {completeTodos.map((todo) => {
+          {completeTodos.map((todo, index) => {
             return (
               <li>
                 <div className="list-row">
                   <p className="todo-item">{todo}</p>
-                  <button>back</button>
+                  <button onClick={() => onClickBack(index)}>back</button>
                 </div>
               </li>
             );
