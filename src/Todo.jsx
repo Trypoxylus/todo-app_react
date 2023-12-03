@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./App.css";
 import "./style.css";
+import { InputTodo } from "./components/InputTodo";
+import { IncompleteTodos } from "./components/IncompleteTodos";
+import { CompleteTodos } from "./components/CompleteTodos";
 
 export const Todo = () => {
   const [todoText, setTodoText] = useState("");
@@ -42,45 +45,17 @@ export const Todo = () => {
   };
   return (
     <>
-      <div className="input-area">
-        <input
-          placeholder="input TODO"
-          value={todoText}
-          onChange={onChangeTodoText}
-        ></input>
-        <button onClick={onClickAdd}>Add</button>
-      </div>
-      <div className="incomplete-area">
-        <p className="title">INCOMPLETE TODO</p>
-        <ul>
-          {incompleteTodos.map((todo, index) => {
-            return (
-              <li key={todo}>
-                <div className="list-row">
-                  <p className="todo-item">{todo}</p>
-                  <button onClick={() => onClickComplete(index)}>done</button>
-                  <button onClick={() => onClickDelete(index)}>delete</button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      <div className="complete-area">
-        <p className="title">COMPLETE TODO</p>
-        <ul>
-          {completeTodos.map((todo, index) => {
-            return (
-              <li>
-                <div className="list-row">
-                  <p className="todo-item">{todo}</p>
-                  <button onClick={() => onClickBack(index)}>back</button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <InputTodo
+        todoText={todoText}
+        onChange={onChangeTodoText}
+        onClick={onClickAdd}
+      />
+      <IncompleteTodos
+        todos={incompleteTodos}
+        onClickComplete={onClickComplete}
+        onClickDelete={onClickDelete}
+      />
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
     </>
   );
 };
